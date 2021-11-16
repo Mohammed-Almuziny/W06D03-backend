@@ -4,6 +4,6 @@ const { sginIn } = require("../controllers/account");
 
 const accountRouter = express.Router();
 
-accountRouter.get("/sginin", sginIn);
+accountRouter.post("/sginin", sginIn);
 
 module.exports = accountRouter;
