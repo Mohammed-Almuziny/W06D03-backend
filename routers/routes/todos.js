@@ -4,6 +4,6 @@ const { getTodos } = require("../controllers/todos");
 
 const todosRouter = express.Router();
 
-todosRouter.get("/", getTodos);
+todosRouter.get("/getTodos/:userName", getTodos);
 
 module.exports = todosRouter;

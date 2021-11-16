@@ -13,12 +13,13 @@ fs.readFile("./db/accounts.json", (err, data) => {
 
 const sginIn = (req, res) => {
   const newAccount = req.body;
+  newAccount.todos = [];
 
   accounts.forEach((elm) => {
     if (elm.userName === newAccount.userName)
-      res.status(404).json("user name already exists");
+      res.status(403).json("user name already exists");
     if (elm.email === newAccount.email)
-      res.status(404).json("email already exists");
+      res.status(403).json("email already exists");
   });
 
   accounts.push(newAccount);
@@ -35,14 +36,16 @@ const sginIn = (req, res) => {
 
 const logIn = (req, res) => {
   const { userNameOrEmail, password } = req.params;
-  let userName = '';
+  let userName = "";
   let key = 0;
 
   console.log(req.params);
   accounts.forEach((elm) => {
     if (elm.userName === userNameOrEmail || elm.email === userNameOrEmail)
-      if (elm.password === password){ key = 1;  userName = elm.userName }
-      else key = 2;
+      if (elm.password === password) {
+        key = 1;
+        userName = elm.userName;
+      } else key = 2;
   });
 
   switch (key) {
