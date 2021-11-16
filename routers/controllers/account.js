@@ -16,8 +16,8 @@ const sginIn = (req, res) => {
 
   console.log(accounts);
 
-  accounts.forEach((element) => {
-    if (element.userName === newAccount.userName)
+  accounts.forEach((elm) => {
+    if (elm.userName === newAccount.userName)
       res.status(404).json("user name already exists");
     if (element.email === newAccount.email)
       res.status(404).json("email already exists");
@@ -35,4 +35,29 @@ const sginIn = (req, res) => {
   });
 };
 
-module.exports = { sginIn };
+const logIn = (req, res) => {
+  const { userNameOrEmail, password } = req.body;
+  let key = 0;
+
+  accounts.forEach((elm) => {
+    if (elm.userName === userNameOrEmail || elm.email === userNameOrEmail)
+      if (elm.password === password) key = 1;
+      else key = 2;
+  });
+
+  switch (key) {
+    case 1:
+      res.status(200).json(req.body);
+      break;
+      
+    case 2:
+      res.status(200).json("wrnog password");
+      break;
+
+    default:
+      res.status(200).json("this user name or email dose not existing");
+      break;
+  }
+};
+
+module.exports = { sginIn, logIn };
