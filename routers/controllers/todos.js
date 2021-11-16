@@ -19,4 +19,22 @@ const getTodos = (req, res) => {
   res.status(200).json(target.todos);
 };
 
-module.exports = { getTodos };
+const addTodos = (req, res) => {
+  const { userName, todo } = req.params;
+
+  accounts.forEach((account) => {
+    if (account.userName === userName) account.todos.push(todo);
+  });
+  console.log(accounts);
+
+  fs.writeFile("./db/accounts.json", JSON.stringify(accounts), (err) => {
+    if (err) {
+      console.log(err);
+      return err;
+    } else {
+      res.status(200).json(accounts);
+    }
+  });
+};
+
+module.exports = { getTodos, addTodos };
