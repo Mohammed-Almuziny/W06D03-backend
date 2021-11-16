@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-let accounts = {};
+let accounts = [];
 
 fs.readFile("./db/accounts.json", (err, data) => {
   if (err) {
