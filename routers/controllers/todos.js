@@ -38,7 +38,6 @@ const addTodos = (req, res) => {
 
 const changeTodos = (req, res) => {
   const { userName, oldTodo, newTodo } = req.params;
-  console.log(req.params);
   let index;
 
   accounts.find((account, i) => {
@@ -62,4 +61,28 @@ const changeTodos = (req, res) => {
   });
 };
 
-module.exports = { getTodos, addTodos, changeTodos };
+const deleteTodo = (req, res) => {
+  const { userName, targetTodo } = req.params;
+  let index;
+
+  accounts.find((account, i) => {
+    if (account.userName === userName) {
+      index = i;
+    }
+  });
+
+  accounts[index].todos = accounts[index].todos.filter(
+    (todo) => todo !== targetTodo
+  );
+
+  fs.writeFile("./db/accounts.json", JSON.stringify(accounts), (err) => {
+    if (err) {
+      console.log(err);
+      return err;
+    } else {
+      res.status(200).json(accounts);
+    }
+  });
+};
+
+module.exports = { getTodos, addTodos, changeTodos, deleteTodo };
