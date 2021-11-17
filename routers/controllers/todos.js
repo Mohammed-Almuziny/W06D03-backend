@@ -25,7 +25,6 @@ const addTodos = (req, res) => {
   accounts.forEach((account) => {
     if (account.userName === userName) account.todos.push(todo);
   });
-  console.log(accounts);
 
   fs.writeFile("./db/accounts.json", JSON.stringify(accounts), (err) => {
     if (err) {
@@ -37,4 +36,30 @@ const addTodos = (req, res) => {
   });
 };
 
-module.exports = { getTodos, addTodos };
+const changeTodos = (req, res) => {
+  const { userName, oldTodo, newTodo } = req.params;
+  console.log(req.params);
+  let index;
+
+  accounts.find((account, i) => {
+    if (account.userName === userName) {
+      index = i;
+    }
+  });
+
+  accounts[index].todos = accounts[index].todos.map((todo) => {
+    if (todo === oldTodo) return newTodo;
+    else return todo;
+  });
+
+  fs.writeFile("./db/accounts.json", JSON.stringify(accounts), (err) => {
+    if (err) {
+      console.log(err);
+      return err;
+    } else {
+      res.status(200).json(accounts);
+    }
+  });
+};
+
+module.exports = { getTodos, addTodos, changeTodos };
